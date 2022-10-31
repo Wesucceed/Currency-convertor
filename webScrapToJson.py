@@ -114,12 +114,27 @@ def to_json_string( old, new, old_amount, new_amount):
     return json
 
 def get_rate_json(old, new, amt):
+    """
+    Returns a json string that has the old currency , new currency,
+    old amount, and new amount in the form
+    '"lhs" : "old amount old currency", "rhs: "new amount new currency", "err" : ""'
+
+    Parameter old: the currency on hand
+    Precondition: old is a valid currency code string
+
+    Parameter new: the currency to convert to
+    Precondition: new is a valid currency code string
+
+    Parameter amt: the amount to be converted or on hand
+    Precondition: amt is an integer
+    """
+
     rates = get_rates('f1043d48efdb4c30a6e9e0a362a4978a')
     old_rate = USD_currency_rate(rates, old)
     new_rate = USD_currency_rate(rates, new)
     rate_ratio = old_new_rate(old_rate, new_rate)
-    desired_amount = old_to_new(rate_ratio, 5)
-    json = to_json_string('GHS', 'QAR', amt, desired_amount)
+    desired_amount = old_to_new(rate_ratio, amt)
+    json = to_json_string(old, new, amt, desired_amount)
     
     return json
 
